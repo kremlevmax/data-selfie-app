@@ -1,0 +1,38 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <button type='button' id='sendData'>Click me!</button>
+
+    <script>
+        if ('geolocation' in navigator) {
+            const location = navigator.geolocation.getCurrentPosition(async position => {
+                const coordinates = position.coords;
+                const lat = coordinates.latitude;
+                const lon = coordinates.longitude
+
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        lat,
+                        lon
+                    })
+                }
+
+                document.getElementById('sendData').addEventListener('click', async () => {
+                    const respond = await fetch('/api', options);
+                    const json = await respond.json()
+                })
+
+            })
+        }
+    </script>
+</body>
+
+</html>

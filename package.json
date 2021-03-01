@@ -1,0 +1,22 @@
+{
+  "name": "data-selfie-app",
+  "version": "1.0.0",
+  "description": "A student excercise based on Joey K. Lee project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "selfie",
+    "server",
+    "data",
+    "student"
+  ],
+  "author": "kremlevmax1989",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
