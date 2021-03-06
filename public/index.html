@@ -28,6 +28,7 @@
                 document.getElementById('sendData').addEventListener('click', async () => {
                     const respond = await fetch('/api', options);
                     const json = await respond.json()
+                    console.log(json);
                 })
 
             })
