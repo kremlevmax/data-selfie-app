@@ -1,39 +1,68 @@
-<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/combine/npm/p5@1.2.0,npm/p5@1.2.0/lib/p5.min.js"></script>
 
+    <title>Data list</title>
 </head>
 
 <body>
-    <button type='button' id='sendData'>Click me!</button>
+    <p>
+        <H1>Selfie Data App </H1>
+        <a href="./index.html">Index</a> | <a href="./datalist.html">Data List</a>
+    </p>
 
-    <script>
-        if ('geolocation' in navigator) {
-            const location = navigator.geolocation.getCurrentPosition(async position => {
-                const coordinates = position.coords;
-                const lat = coordinates.latitude;
-                const lon = coordinates.longitude
 
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        lat,
-                        lon
+    <form>
+        <label for="name">Your name:</label><br>
+        <input type="text" id="userName" name="name"><br>
+        <button type='button' id='sendData'>Send name and geodata</button>
+
+        <script>
+            function setup() {
+
+
+                if ('geolocation' in navigator) {
+                    const location = navigator.geolocation.getCurrentPosition(async position => {
+                        noCanvas();
+                        const photoshot = createCapture(VIDEO);
+                        photoshot.size(320, 240)
+                        const coordinates = position.coords;
+                        const lat = coordinates.latitude;
+                        const lon = coordinates.longitude
+                        const formUserName = document.getElementById("userName")
+
+                        document.getElementById('sendData').addEventListener('click', async () => {
+                            photoshot.loadPixels();
+                            const pic64 = photoshot.canvas.toDataURL()
+                            let userName = formUserName.value
+                            const options = {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    userName,
+                                    lat,
+                                    lon,
+                                    pic64
+                                })
+                            }
+                            const respond = await fetch('/api', options);
+                            const json = await respond.json()
+                        })
                     })
                 }
 
-                document.getElementById('sendData').addEventListener('click', async () => {
-                    const respond = await fetch('/api', options);
-                    const json = await respond.json()
-                    console.log(json);
-                })
 
-            })
-        }
-    </script>
+
+            }
+        </script>
 </body>
 
 </html>
